@@ -61,7 +61,7 @@ pip install csikit
 
 3. Analyze the data with CSIKit:
    ```bash
-   csikit --graph data/csi.dat
+   csikit --graph data/<name>.dat
    ```
 
 4. Alternatively, use the provided Jupyter notebook for data analysis:
