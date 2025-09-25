@@ -32,6 +32,21 @@ sudo apt update && sudo apt install -y flex bison
 
 **Note:** The `feitcsi-iwlwifi_2.0.0_all.deb` installation may fail if flex and bison are not installed, as the DKMS build process requires these tools for compiling the kernel module.
 
+### Setting up CSIKit for Data Analysis
+
+Create a Python virtual environment and install CSIKit for analyzing the collected CSI data:
+
+```bash
+# Create a virtual environment
+python3 -m venv venv
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Install CSIKit
+pip install csikit
+```
+
 ## Usage
 
 1. Check your wireless interfaces:
@@ -78,7 +93,7 @@ Each CSI measurement contains:
   - Timestamp and FTM clock
   - Source MAC address
   - Rate format (CCK, OFDM, HT, VHT, HE, EHT)
-  - Channel width (20/40/80/160/320 MHz)
+  - Channel width (20/40/80/160 MHz)
   - RSSI values
   - Antenna configuration
   - Number of subcarriers, TX/RX antennas
