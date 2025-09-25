@@ -67,6 +67,11 @@ pip install csikit
    csikit --graph csi.dat
    ```
 
+4. Alternatively, use the provided Jupyter notebook for data analysis:
+   ```bash
+   jupyter lab notebooks/parseFeitCSI.ipynb
+   ```
+
 ## Technical Details
 
 ### CSI Functionality
@@ -93,7 +98,7 @@ Each CSI measurement contains:
   - Timestamp and FTM clock
   - Source MAC address
   - Rate format (CCK, OFDM, HT, VHT, HE, EHT)
-  - Channel width (20/40/80/160 MHz)
+  - Channel width (20/40/80/160/360 MHz)
   - RSSI values
   - Antenna configuration
   - Number of subcarriers, TX/RX antennas
