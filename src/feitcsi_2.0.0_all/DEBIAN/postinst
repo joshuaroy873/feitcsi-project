@@ -1,0 +1,25 @@
+#!/bin/sh
+set -e
+
+NAME=feitcsi
+SOURCE=/usr/share/${NAME}
+TARGET_APP=${SOURCE}/bin/app
+
+num_cpu_cores()
+{
+  if [ -x /usr/bin/nproc ]; then
+    nproc
+  else
+    echo "1"
+  fi
+}
+
+make -C ${SOURCE} -j$(num_cpu_cores)
+
+if [ -f ${TARGET_APP} ]; then
+    cp ${TARGET_APP} /usr/local/bin/feitcsi
+else
+    echo 'Compilation error. FeitCSI was not installed.'
+fi
+
+make clean -C ${SOURCE} 

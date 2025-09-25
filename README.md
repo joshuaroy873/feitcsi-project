@@ -1,0 +1,85 @@
+# FeitCSI Project
+
+Replicating the FeitCSI project which is an open-source 802.11 CSI (Channel State Information) extraction and frame injection tool for Intel wireless NICs.
+
+## Quick Links
+- [Official Documentation](https://feitcsi.kuskosoft.com/)
+- [CSIKit Integration](https://github.com/Gi-z/CSIKit)
+
+## Tested Environment
+- **Laptop**: Dell XPS 13 7390
+- **OS**: Ubuntu 24.04.3 LTS (Noble)
+- **WiFi Card**: Intel Corporation Wi-Fi 6 AX200 (rev 1a)
+
+## Installation
+
+### Prerequisites
+Install required build dependencies:
+```bash
+sudo apt update && sudo apt install -y flex bison
+```
+
+### Installation Steps
+1. Install the iwlwifi driver package first:
+   ```bash
+   sudo dpkg -i debs/feitcsi-iwlwifi_2.0.0_all.deb
+   ```
+
+2. Install the main FeitCSI package:
+   ```bash
+   sudo dpkg -i debs/feitcsi_2.0.0_all.deb
+   ```
+
+**Note:** The `feitcsi-iwlwifi_2.0.0_all.deb` installation may fail if flex and bison are not installed, as the DKMS build process requires these tools for compiling the kernel module.
+
+## Usage
+
+1. Check your wireless interfaces:
+   ```bash
+   iw dev
+   iw dev wlp2s0 info
+   ```
+   The `iw dev wlp2s0 info` command provides the `--frequency` and `--channel-width` values needed for the next command.
+
+2. Start CSI collection:
+   ```bash
+   sudo feitcsi --frequency 5180 --channel-width 80 --format HESU --output-file <name>.dat -v
+   ```
+
+3. Analyze the data with CSIKit:
+   ```bash
+   source venv/bin/activate
+   csikit --graph csi.dat
+   ```
+
+## Technical Details
+
+### CSI Functionality
+The package adds CSI (Channel State Information) extraction through:
+- Vendor commands: `IWL_MVM_VENDOR_CMD_CSI_EVENT` (iwl-vendor-cmd.h)
+- CSI data attributes: `IWL_MVM_VENDOR_ATTR_CSI_HDR` and `IWL_MVM_VENDOR_ATTR_CSI_DATA` (iwl-vendor-cmd.h)
+- Notification handlers: `CSI_HEADER_NOTIFICATION` and `CSI_CHUNKS_NOTIFICATION` (location.h)
+
+**File Locations:**
+- `iwl-vendor-cmd.h`: `/usr/src/feitcsi-iwlwifi-2.0.0/drivers/net/wireless/intel/iwlwifi/iwl-vendor-cmd.h`
+- `location.h`: `/usr/src/feitcsi-iwlwifi-2.0.0/drivers/net/wireless/intel/iwlwifi/fw/api/location.h`
+
+### Data Flow
+1. **CSI Collection**: The firmware collects CSI data from received packets
+2. **Chunked Transfer**: Large CSI data is split into chunks (max 16 chunks)
+3. **Netlink Interface**: Data is sent to userspace via vendor-specific netlink messages
+4. **Data Format**: Each CSI measurement includes:
+   - Header with metadata (timestamp, RSSI, rate info, antenna config)
+   - Complex CSI matrix data (subcarriers x RX antennas x TX antennas)
+
+### Data Structure
+Each CSI measurement contains:
+- **272-byte header** with metadata including:
+  - Timestamp and FTM clock
+  - Source MAC address
+  - Rate format (CCK, OFDM, HT, VHT, HE, EHT)
+  - Channel width (20/40/80/160/320 MHz)
+  - RSSI values
+  - Antenna configuration
+  - Number of subcarriers, TX/RX antennas
+- **Variable-length CSI data**: Complex numbers (16-bit real + 16-bit imaginary) for each subcarrier-antenna pair

@@ -1,0 +1,9 @@
+Package: feitcsi-iwlwifi
+Version: 2.0.0
+Architecture: all
+Maintainer: hutar@kuskosoft.com
+Depends: dkms (>= 2.1.0.0), libc6-dev | libc-dev
+Section: kernel
+Priority: optional
+Homepage: https://feitcsi.kuskosoft.com/
+Description: Customized iwlwifi driver for FeitCSI.
