@@ -104,7 +104,7 @@ Each CSI measurement contains:
   - Number of subcarriers, TX/RX antennas
 - **Variable-length CSI data**: Complex numbers (16-bit real + 16-bit imaginary) for each subcarrier-antenna pair
 
-## Further reading
+## Worth Exploring
 
 - https://github.com/seemoo-lab/nexmon_csi/issues/207
 - https://www.linuxquestions.org/questions/linux-networking-3/measure-channel-state-information-csi-using-iwlwifi-4175726176/
