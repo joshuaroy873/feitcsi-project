@@ -22,3 +22,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Adding src/ to ignore list as it is extraction of deb files
+src/

@@ -81,13 +81,14 @@ The package adds CSI (Channel State Information) extraction through:
 - `iwl-vendor-cmd.h`: `/usr/src/feitcsi-iwlwifi-2.0.0/drivers/net/wireless/intel/iwlwifi/iwl-vendor-cmd.h`
 - `location.h`: `/usr/src/feitcsi-iwlwifi-2.0.0/drivers/net/wireless/intel/iwlwifi/fw/api/location.h`
  
-These files are included in the `feitcsi-iwlwifi_2.0.0_all.deb` package inside `/debs` folder, which can be extracted as follows:
+These files are included in the `feitcsi-iwlwifi_2.0.0_all.deb` package inside `/debs` folder, which can be extracted (for inspection) as follows:
 
 ```bash
 mkdir -p src && cd src && mkdir -p feitcsi-iwlwifi_2.0.0_all \
    && dpkg-deb -x ../debs/feitcsi-iwlwifi_2.0.0_all.deb feitcsi-iwlwifi_2.0.0_all \
    && dpkg-deb -e ../debs/feitcsi-iwlwifi_2.0.0_all.deb feitcsi-iwlwifi_2.0.0_all/DEBIAN
 ```
+> **Note:** The `src/` directory is included in `.gitignore` and must be added manually if needed.
 
 ### Data Flow
 1. **CSI Collection**: The firmware collects CSI data from received packets
