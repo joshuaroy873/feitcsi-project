@@ -3,7 +3,7 @@
 Replicating the FeitCSI project which is an open-source 802.11 CSI (Channel State Information) extraction and frame injection tool for Intel wireless NICs.
 
 ## Quick Links
-- [Official Documentation](https://feitcsi.kuskosoft.com/)
+- [FeitCSI: Official Documentation](https://feitcsi.kuskosoft.com/)
 - [CSIKit Integration](https://github.com/Gi-z/CSIKit)
 
 ## Tested Environment
