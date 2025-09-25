@@ -1,9 +1,0 @@
-Package: feitcsi
-Version: 2.0.0
-Architecture: all
-Maintainer: hutar@kuskosoft.com
-Depends: make, g++, libgtkmm-3.0-dev, libnl-genl-3-dev, libiw-dev, libpcap-dev
-Section: education
-Priority: optional
-Homepage: https://feitcsi.kuskosoft.com/
-Description: FeitCSI, tool for extracting CSI.
