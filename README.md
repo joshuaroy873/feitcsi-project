@@ -17,9 +17,12 @@ Replicating the FeitCSI project which is an open-source 802.11 CSI (Channel Stat
 Install required build dependencies:
 ```bash
 sudo apt update && sudo apt install -y flex bison
+sudo apt install -y iw
 ```
 
 ### Installation Steps
+The `.deb` files are located in the `/debs` folder. 
+
 1. Install the iwlwifi driver package first:
    ```bash
    sudo dpkg -i debs/feitcsi-iwlwifi_2.0.0_all.deb
@@ -30,20 +33,15 @@ sudo apt update && sudo apt install -y flex bison
    sudo dpkg -i debs/feitcsi_2.0.0_all.deb
    ```
 
-**Note:** The `feitcsi-iwlwifi_2.0.0_all.deb` installation may fail if flex and bison are not installed, as the DKMS build process requires these tools for compiling the kernel module.
+**Note:** The `feitcsi-iwlwifi_2.0.0_all.deb` installation may fail if `flex` and `bison` are not installed, as the DKMS build process requires these tools for compiling the kernel module.
 
 ### Setting up CSIKit for Data Analysis
 
 Create a Python virtual environment and install CSIKit for analyzing the collected CSI data:
 
 ```bash
-# Create a virtual environment
 python3 -m venv venv
-
-# Activate the virtual environment
 source venv/bin/activate
-
-# Install CSIKit
 pip install csikit
 ```
 
@@ -58,13 +56,12 @@ pip install csikit
 
 2. Start CSI collection:
    ```bash
-   sudo feitcsi --frequency 5180 --channel-width 80 --format HESU --output-file <name>.dat -v
+   sudo feitcsi --frequency 5180 --channel-width 80 --format HESU --output-file data/<name>.dat -v
    ```
 
 3. Analyze the data with CSIKit:
    ```bash
-   source venv/bin/activate
-   csikit --graph csi.dat
+   csikit --graph data/csi.dat
    ```
 
 4. Alternatively, use the provided Jupyter notebook for data analysis:
@@ -76,13 +73,21 @@ pip install csikit
 
 ### CSI Functionality
 The package adds CSI (Channel State Information) extraction through:
-- Vendor commands: `IWL_MVM_VENDOR_CMD_CSI_EVENT` (iwl-vendor-cmd.h)
-- CSI data attributes: `IWL_MVM_VENDOR_ATTR_CSI_HDR` and `IWL_MVM_VENDOR_ATTR_CSI_DATA` (iwl-vendor-cmd.h)
-- Notification handlers: `CSI_HEADER_NOTIFICATION` and `CSI_CHUNKS_NOTIFICATION` (location.h)
+- Vendor commands: `IWL_MVM_VENDOR_CMD_CSI_EVENT` (`iwl-vendor-cmd.h`)
+- CSI data attributes: `IWL_MVM_VENDOR_ATTR_CSI_HDR` and `IWL_MVM_VENDOR_ATTR_CSI_DATA` (`iwl-vendor-cmd.h`)
+- Notification handlers: `CSI_HEADER_NOTIFICATION` and `CSI_CHUNKS_NOTIFICATION` (`location.h`)
 
 **File Locations:**
 - `iwl-vendor-cmd.h`: `/usr/src/feitcsi-iwlwifi-2.0.0/drivers/net/wireless/intel/iwlwifi/iwl-vendor-cmd.h`
 - `location.h`: `/usr/src/feitcsi-iwlwifi-2.0.0/drivers/net/wireless/intel/iwlwifi/fw/api/location.h`
+ 
+These files are included in the `feitcsi-iwlwifi_2.0.0_all.deb` package inside `/debs` folder, which can be extracted as follows:
+
+```bash
+mkdir -p src && cd src && mkdir -p feitcsi-iwlwifi_2.0.0_all \
+   && dpkg-deb -x ../debs/feitcsi-iwlwifi_2.0.0_all.deb feitcsi-iwlwifi_2.0.0_all \
+   && dpkg-deb -e ../debs/feitcsi-iwlwifi_2.0.0_all.deb feitcsi-iwlwifi_2.0.0_all/DEBIAN
+```
 
 ### Data Flow
 1. **CSI Collection**: The firmware collects CSI data from received packets
