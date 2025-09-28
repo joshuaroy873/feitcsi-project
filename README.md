@@ -33,6 +33,13 @@ The `.deb` files are located in the `/debs` folder.
    sudo dpkg -i debs/feitcsi_2.0.0_all.deb
    ```
 
+3. If step 1/2 had issues because of missing dependencies, run the following:
+   ```bash
+   sudo apt install
+   sudo apt install --fix-broken
+   ```
+   After this, repeat step 1/2 .
+
 **Note:** The `feitcsi-iwlwifi_2.0.0_all.deb` installation may fail if `flex` and `bison` are not installed, as the DKMS build process requires these tools for compiling the kernel module.
 
 ### Setting up CSIKit for Data Analysis
